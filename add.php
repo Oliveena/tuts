@@ -42,6 +42,14 @@ if (isset($_POST['submit'])) {  // was the form submitted?  $_POST is a *global*
             $errors['ingredients'] = "Ingredients must be a comma-separated list.";
         }
     }
+
+    if (array_filter($errors)) { // no errors => returns false; error(s) => returns true)
+        //echo 'hey! there are errors in the form.';
+    } else {
+        //echo 'Form is valid.';
+        
+        header('Location: index.php');  //attention! save the data BEFORE redirecting!
+    }
     // end of POST check
 }
 
