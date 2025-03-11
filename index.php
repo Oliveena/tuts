@@ -1,13 +1,6 @@
 <?php
 
-// MySQLi or PDO
-// connect to database
-$conn = mysqli_connect('localhost', 'shaun', 'test1234', 'ninja_pizza');
-
-// check the connection
-if (!$conn) {
-    echo 'Connection error' . mysqli_connect_error();
-}
+include('config/db_connect.php');
 
 // THREE STEPS: 
 // 1) write query to get all pizzas
@@ -53,7 +46,7 @@ mysqli_close($conn);
                         </ul>
                     </div>
                     <div class="card-action right-align">
-                        <a href="#" class="brand-text">More info</a>
+                        <a href="details.php?id = <?php echo $pizza['id']?>" class="brand-text">More info</a>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,7 @@
 <?php
 
+include('config/db_connect.php');
+
 $email = $title = $ingredients = "";
 $errors = array('email' => '', 'title' => '', 'ingredients' => '');
 
@@ -47,10 +49,25 @@ if (isset($_POST['submit'])) {  // was the form submitted?  $_POST is a *global*
         //echo 'hey! there are errors in the form.';
     } else {
         //echo 'Form is valid.';
-        
-        header('Location: index.php');  //attention! save the data BEFORE redirecting!
+
+        $email = mysqli_real_escape_string($conn, $_POST['email']); //store the user email in DB
+        $title = mysqli_real_escape_string($conn, $_POST['title']);
+        $ingredients = mysqli_real_escape_string($conn, $_POST['ingredients']);
+
+        // create SQL insert: into these columns, insert these $values
+        $sql = "INSERT INTO pizzas(title, email, ingredients) VALUES('$title', '$email', '$ingredients')";
+
+        // save to DB and check (make query and get result)
+        if(mysqli_query($conn, $sql)) {
+            //succes
+            header('Location: index.php');
+        } else {
+            //error
+            echo 'query error: ' . mysqli_error($conn);
+        }
     }
     // end of POST check
+    //attention! save the data BEFORE redirecting!
 }
 
 ?>
@@ -58,10 +75,9 @@ if (isset($_POST['submit'])) {  // was the form submitted?  $_POST is a *global*
 <!DOCTYPE html>
 <html lang="en">
 
-
 <?php include('templates/header.php'); ?>
 
-<section class="container grey-text"></section>
+<section class="container grey-text">
 <h4 class="center">Add a Pizza</h4>
 <form class="white" action="add.php" method="POST">
     <label>Your Email: </label>
@@ -77,6 +93,7 @@ if (isset($_POST['submit'])) {  // was the form submitted?  $_POST is a *global*
         <input type="submit" name="submit" value="sumbit" class="btn brand z-depth-0">
     </div>
 </form>
+</section>
 
 <?php include('templates/footer.php'); ?>
 
